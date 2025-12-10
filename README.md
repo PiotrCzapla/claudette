@@ -15,8 +15,7 @@ to do a lot of stuff manually. That’s a lot of extra work and
 boilerplate! Claudette automates pretty much everything that can be
 automated, whilst providing full control. Amongst the features provided:
 
-- A [`Chat`](https://claudette.answer.ai/core.html#chat) class that
-  creates stateful dialogs
+- A `Chat` class that creates stateful dialogs
 - Support for *prefill*, which tells Claude what to use as the first few
   words of its response
 - Convenient image support
@@ -89,11 +88,16 @@ available from the SDK.
 models
 ```
 
-    ['claude-opus-4-20250514',
-     'claude-sonnet-4-20250514',
+    ['claude-opus-4-5',
+     'claude-sonnet-4-5',
+     'claude-haiku-4-5',
+     'claude-opus-4-1-20250805',
+     'claude-opus-4-20250514',
      'claude-3-opus-20240229',
+     'claude-sonnet-4-20250514',
      'claude-3-7-sonnet-20250219',
-     'claude-3-5-sonnet-20241022']
+     'claude-3-5-sonnet-20241022',
+     'claude-3-haiku-20240307']
 
 For these examples, we’ll use Sonnet 4, since it’s awesome!
 
@@ -102,13 +106,12 @@ model = models[1]
 model
 ```
 
-    'claude-sonnet-4-20250514'
+    'claude-sonnet-4-5'
 
 ## Chat
 
-The main interface to Claudette is the
-[`Chat`](https://claudette.answer.ai/core.html#chat) class, which
-provides a stateful interface to Claude:
+The main interface to Claudette is the `Chat` class, which provides a
+stateful interface to Claude:
 
 ``` python
 chat = Chat(model, sp="""You are a helpful and concise assistant.""")
@@ -119,16 +122,16 @@ Hello Jeremy! Nice to meet you. How can I help you today?
 
 <details>
 
-- id: `msg_01NNfbziMKnAULhH72Upzpzg`
+- id: `msg_01SUuWHAbhHJLDj4ZZXQRkko`
 - content:
   `[{'citations': None, 'text': 'Hello Jeremy! Nice to meet you. How can I help you today?', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 19, 'output_tokens': 18, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 19, 'output_tokens': 18, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -137,20 +140,20 @@ r = chat("What's my name?")
 r
 ```
 
-Your name is Jeremy.
+Your name is Jeremy!
 
 <details>
 
-- id: `msg_01HoboBZtq6dtocz2UWht9ia`
+- id: `msg_01V2Udc8rdipXa3sKtPDsAmz`
 - content:
-  `[{'citations': None, 'text': 'Your name is Jeremy.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'Your name is Jeremy!', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 45, 'output_tokens': 8, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 45, 'output_tokens': 8, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -159,20 +162,20 @@ r = chat("What's my name?")
 r
 ```
 
-Your name is Jeremy.
+Your name is Jeremy! Is there something I can help you with?
 
 <details>
 
-- id: `msg_01SUAYui6JS3Jf65KYfsGWhU`
+- id: `msg_01Hjj5FEtToCFizRVxuGKeC8`
 - content:
-  `[{'citations': None, 'text': 'Your name is Jeremy.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'Your name is Jeremy! Is there something I can help you with?', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 61, 'output_tokens': 8, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 61, 'output_tokens': 17, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -184,7 +187,7 @@ collapsible section. Alternatively you can `print` the details:
 print(r)
 ```
 
-    Message(id='msg_01SUAYui6JS3Jf65KYfsGWhU', content=[TextBlock(citations=None, text='Your name is Jeremy.', type='text')], model='claude-sonnet-4-20250514', role='assistant', stop_reason='end_turn', stop_sequence=None, type='message', usage=In: 61; Out: 8; Cache create: 0; Cache read: 0; Total Tokens: 69; Search: 0)
+    Message(id='msg_01Hjj5FEtToCFizRVxuGKeC8', content=[TextBlock(citations=None, text='Your name is Jeremy! Is there something I can help you with?', type='text')], model='claude-sonnet-4-5-20250929', role='assistant', stop_reason='end_turn', stop_sequence=None, type='message', usage=In: 61; Out: 17; Cache create: 0; Cache read: 0; Total Tokens: 78; Search: 0)
 
 Claude supports adding an extra `assistant` message at the end, which
 contains the *prefill* – i.e. the text we want Claude to assume the
@@ -195,22 +198,24 @@ chat("Concisely, what is the meaning of life?",
      prefill='According to Douglas Adams,')
 ```
 
-According to Douglas Adams,it’s 42. More seriously, many find meaning
-through relationships, personal growth, contributing to others, and
-pursuing what brings fulfillment.
+According to Douglas Adams, it’s 42.
+
+More seriously: finding purpose through connections with others,
+personal growth, and contributing something meaningful - though the
+specific answer is deeply personal to each individual.
 
 <details>
 
-- id: `msg_01UkHn37YePdXg8NVrXk9Qu3`
+- id: `msg_01EN3RUQ7vn4KX9erCFeYeAC`
 - content:
-  `[{'citations': None, 'text': "According to Douglas Adams,it's 42. More seriously, many find meaning through relationships, personal growth, contributing to others, and pursuing what brings fulfillment.", 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': "According to Douglas Adams,  it's 42. \n\nMore seriously: finding purpose through connections with others, personal growth, and contributing something meaningful - though the specific answer is deeply personal to each individual.", 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 89, 'output_tokens': 32, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 98, 'output_tokens': 40, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -223,35 +228,32 @@ for o in chat("Concisely, what book was that in?", prefill='It was in', stream=T
     print(o, end='')
 ```
 
-    It was in "The Hitchhiker's Guide to the Galaxy."
+    It was in "The Hitchhiker's Guide to the Galaxy" by Douglas Adams.
 
 ### Async
 
-Alternatively, you can use
-[`AsyncChat`](https://claudette.answer.ai/async.html#asyncchat) (or
-[`AsyncClient`](https://claudette.answer.ai/async.html#asyncclient)) for
-the async versions, e.g:
+Alternatively, you can use `AsyncChat` (or `AsyncClient`) for the async
+versions, e.g:
 
 ``` python
 chat = AsyncChat(model)
 await chat("I'm Jeremy")
 ```
 
-Nice to meet you, Jeremy! How are you doing today? Is there anything I
-can help you with?
+Hello Jeremy! Nice to meet you. How can I help you today?
 
 <details>
 
-- id: `msg_01HyDqMjwcKEc2V39xLWTwFf`
+- id: `msg_01QJE9fQnqQNGEuzNPqQ6pHG`
 - content:
-  `[{'citations': None, 'text': 'Nice to meet you, Jeremy! How are you doing today? Is there anything I can help you with?', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'Hello Jeremy! Nice to meet you. How can I help you today?', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 10, 'output_tokens': 25, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 10, 'output_tokens': 18, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -263,7 +265,17 @@ async for o in await chat("Concisely, what is the meaning of life?",
     print(o, end='')
 ```
 
-    According to Douglas Adams,it's 42. But more seriously, the meaning of life is likely something you create through your relationships, contributions, growth, and what brings you fulfillment - rather than something you discover pre-made.
+    According to Douglas Adams,  it's 42.
+
+    More seriously: there's no universal answer. Common perspectives include:
+    - **Creating meaning** through relationships, work, and experiences
+    - **Reducing suffering** and increasing wellbeing (yours and others')
+    - **Connection** - to people, nature, or something transcendent
+    - **Growth** - becoming who you're capable of being
+
+    The question might be less "What is the meaning?" and more "What meaning will you create?"
+
+    What resonates with you?
 
 ## Prompt caching
 
@@ -303,45 +315,39 @@ r = chat(mk_msg(msg, cache=True))
 r
 ```
 
-Based on the README, Claudette is a high-level wrapper for Anthropic’s
-Python SDK that aims to simplify and automate working with Claude’s API.
-Its main purposes are:
+Claudette is a high-level wrapper for Anthropic’s Python SDK that
+simplifies working with Claude AI. Its main purposes are to:
 
-1.  **Reduce boilerplate and manual work** - It automates tasks that
-    would otherwise require manual handling with the base SDK
+1.  **Automate boilerplate** - Handles repetitive tasks that would
+    otherwise require manual coding with the base SDK
+2.  **Provide stateful conversations** - Offers a `Chat` class for
+    maintaining dialog context
+3.  **Simplify advanced features** - Makes it easier to use:
+    - Tool/function calling
+    - Image inputs
+    - Prompt prefilling
+    - Prompt caching
+    - Structured data extraction
+4.  **Support multiple providers** - Works with Anthropic’s API, AWS
+    Bedrock, and Google Vertex
 
-2.  **Provide convenient features** like:
-
-    - Stateful chat dialogs via the
-      [`Chat`](https://claudette.answer.ai/core.html#chat) class
-    - Support for prefill (controlling Claude’s response start)
-    - Easy image handling
-    - Simplified tool use API
-    - Prompt caching support
-
-3.  **Maintain full control** while providing automation - you get
-    convenience without losing flexibility
-
-4.  **Educational value** - It’s the first “literate nbdev” project,
-    meaning the source code is written as a readable Jupyter Notebook
-    with detailed explanations, making it both functional software and a
-    teaching resource
-
-The project essentially makes Claude’s API more ergonomic and
-user-friendly while preserving all the underlying capabilities.
+The project is also notable for being a “literate programming” example -
+its source code is written as an educational Jupyter Notebook that
+explains both how and why the code works, making it accessible even to
+those unfamiliar with the Claude API.
 
 <details>
 
-- id: `msg_011SNy9u95nspNq6PSnQuwBF`
+- id: `msg_011Ukbknc6uXe5DVWm6dKShY`
 - content:
-  `[{'citations': None, 'text': 'Based on the README, Claudette is a high-level wrapper for Anthropic\'s Python SDK that aims to simplify and automate working with Claude\'s API. Its main purposes are:\n\n1. **Reduce boilerplate and manual work** - It automates tasks that would otherwise require manual handling with the base SDK\n2. **Provide convenient features** like:\n   - Stateful chat dialogs via the [`Chat`](https://claudette.answer.ai/core.html#chat) class\n   - Support for prefill (controlling Claude\'s response start)\n   - Easy image handling\n   - Simplified tool use API\n   - Prompt caching support\n\n3. **Maintain full control** while providing automation - you get convenience without losing flexibility\n\n4. **Educational value** - It\'s the first "literate nbdev" project, meaning the source code is written as a readable Jupyter Notebook with detailed explanations, making it both functional software and a teaching resource\n\nThe project essentially makes Claude\'s API more ergonomic and user-friendly while preserving all the underlying capabilities.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'Claudette is a high-level wrapper for Anthropic\'s Python SDK that simplifies working with Claude AI. Its main purposes are to:\n\n1. **Automate boilerplate** - Handles repetitive tasks that would otherwise require manual coding with the base SDK\n2. **Provide stateful conversations** - Offers a`Chat`class for maintaining dialog context\n3. **Simplify advanced features** - Makes it easier to use:\n   - Tool/function calling\n   - Image inputs\n   - Prompt prefilling\n   - Prompt caching\n   - Structured data extraction\n\n4. **Support multiple providers** - Works with Anthropic\'s API, AWS Bedrock, and Google Vertex\n\nThe project is also notable for being a "literate programming" example - its source code is written as an educational Jupyter Notebook that explains both how and why the code works, making it accessible even to those unfamiliar with the Claude API.', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 9287, 'input_tokens': 4, 'output_tokens': 223, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 9288}, 'cache_creation_input_tokens': 9288, 'cache_read_input_tokens': 0, 'input_tokens': 3, 'output_tokens': 210, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -352,7 +358,7 @@ tokens:
 print(r.usage)
 ```
 
-    Usage(cache_creation_input_tokens=0, cache_read_input_tokens=9287, input_tokens=4, output_tokens=223, server_tool_use=None, service_tier='standard')
+    Usage(cache_creation=CacheCreation(ephemeral_1h_input_tokens=0, ephemeral_5m_input_tokens=9288), cache_creation_input_tokens=9288, cache_read_input_tokens=0, input_tokens=3, output_tokens=210, server_tool_use=None, service_tier='standard')
 
 We can now ask a followup question in this chat:
 
@@ -361,13 +367,12 @@ r = chat('How does it make tool use more ergonomic?')
 r
 ```
 
-Based on the README, Claudette makes tool use more ergonomic in several
-key ways:
+Claudette makes tool use more ergonomic in several key ways:
 
-## 1. **Simplified Function Definitions**
+## 1. **Simple Function Definitions with Docments**
 
-Uses docments to make Python function definitions more user-friendly -
-you just need type hints and comments:
+You just write normal Python functions with type hints and comments -
+Claudette automatically converts them into Claude’s tool format:
 
 ``` python
 def sums(
@@ -380,49 +385,48 @@ def sums(
 
 ## 2. **Automatic Tool Execution**
 
-Handles the tool calling process automatically. When Claude returns a
-`tool_use` message, you just call `chat()` again and Claudette: - Calls
-the tool with the provided parameters - Passes the result back to
-Claude - Returns Claude’s final response
+When Claude requests a tool, Claudette automatically: - Detects the
+tool_use response - Calls your Python function with the parameters -
+Sends the result back to Claude - Returns the final answer
 
-No manual parameter extraction or result handling needed.
+You just call `chat()` again and it handles everything behind the
+scenes.
 
-## 3. **Multi-step Tool Workflows**
+## 3. **Single-Step Multi-Tool Solving with `toolloop`**
 
-The `toolloop` method can handle multiple tool calls in sequence to
-solve complex problems. For example, calculating `(a+b)*2` automatically
-uses both addition and multiplication tools in the right order.
+Instead of manually managing back-and-forth tool calls, `toolloop`
+automatically handles multiple tool invocations in one call:
 
-## 4. **Easy Tool Integration**
+``` python
+chat.toolloop('Calculate (604542+6458932)*2')
+# Automatically calls sums(), then mults(), then returns final answer
+```
 
-- Pass tools as a simple list to the
-  [`Chat`](https://claudette.answer.ai/core.html#chat) constructor
-- Optionally force tool usage with `tool_choice` parameter
-- Get structured data directly with
-  [`Client.structured()`](https://claudette.answer.ai/core.html#client.structured)
+## 4. **Direct Structured Output**
 
-## 5. **Reduced Complexity**
+For single-tool results, `Client.structured()` gives you immediate
+output without conversation management:
 
-Instead of manually handling tool use messages, parameter parsing,
-function calls, and result formatting that the base SDK requires,
-Claudette abstracts all of this away while maintaining full
-functionality.
+``` python
+cli.structured("What is 604542+6458932", sums)
+# Returns: [7063474]
+```
 
-This makes tool use feel more like natural function calling rather than
-complex API orchestration.
+This eliminates all the manual tool schema definition, response parsing,
+and execution logic required by the base SDK.
 
 <details>
 
-- id: `msg_01XDJNpxiTkhTY9kbu17Q73L`
+- id: `msg_01EGszFiTeKaXfNXJ4kSNC2g`
 - content:
-  ```` [{'citations': None, 'text': 'Based on the README, Claudette makes tool use more ergonomic in several key ways:\n\n## 1. **Simplified Function Definitions**\nUses docments to make Python function definitions more user-friendly - you just need type hints and comments:\n\n```python\ndef sums(\n    a:int,  # First thing to sum\n    b:int=1 # Second thing to sum\n) -> int: # The sum of the inputs\n    "Adds a + b."\n    return a + b\n```\n\n## 2. **Automatic Tool Execution**\nHandles the tool calling process automatically. When Claude returns a ````tool_use`message, you just call`chat()`again and Claudette:\n- Calls the tool with the provided parameters\n- Passes the result back to Claude\n- Returns Claude\'s final response\n\nNo manual parameter extraction or result handling needed.\n\n## 3. **Multi-step Tool Workflows**\nThe`toolloop`method can handle multiple tool calls in sequence to solve complex problems. For example, calculating`(a+b)\*2`automatically uses both addition and multiplication tools in the right order.\n\n## 4. **Easy Tool Integration**\n- Pass tools as a simple list to the [`Chat`](https://claudette.answer.ai/core.html#chat) constructor\n- Optionally force tool usage with`tool_choice`parameter\n- Get structured data directly with [`Client.structured()`](https://claudette.answer.ai/core.html#client.structured)\n\n## 5. **Reduced Complexity**\nInstead of manually handling tool use messages, parameter parsing, function calls, and result formatting that the base SDK requires, Claudette abstracts all of this away while maintaining full functionality.\n\nThis makes tool use feel more like natural function calling rather than complex API orchestration.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  ```` [{'citations': None, 'text': 'Claudette makes tool use more ergonomic in several key ways:\n\n## 1. **Simple Function Definitions with Docments**\nYou just write normal Python functions with type hints and comments - Claudette automatically converts them into Claude\'s tool format:\n\n```python\ndef sums(\n    a:int,  # First thing to sum\n    b:int=1 # Second thing to sum\n) -> int: # The sum of the inputs\n    "Adds a + b."\n    return a + b\n```\n\n## 2. **Automatic Tool Execution**\nWhen Claude requests a tool, Claudette automatically:\n- Detects the tool_use response\n- Calls your Python function with the parameters\n- Sends the result back to Claude\n- Returns the final answer\n\nYou just call ````chat()`again and it handles everything behind the scenes.\n\n## 3. **Single-Step Multi-Tool Solving with`toolloop`**\nInstead of manually managing back-and-forth tool calls,`toolloop```` automatically handles multiple tool invocations in one call:\n\n```python\nchat.toolloop(\'Calculate (604542+6458932)*2\')\n# Automatically calls sums(), then mults(), then returns final answer\n```\n\n## 4. **Direct Structured Output**\nFor single-tool results, ````Client.structured()```` gives you immediate output without conversation management:\n\n```python\ncli.structured("What is 604542+6458932", sums)\n# Returns: [7063474]\n```\n\nThis eliminates all the manual tool schema definition, response parsing, and execution logic required by the base SDK.', 'type': 'text'}] ````
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 9287, 'input_tokens': 241, 'output_tokens': 374, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 9288, 'input_tokens': 227, 'output_tokens': 368, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -433,13 +437,13 @@ context tokens have been read from cache.
 print(r.usage)
 ```
 
-    Usage(cache_creation_input_tokens=0, cache_read_input_tokens=9287, input_tokens=241, output_tokens=374, server_tool_use=None, service_tier='standard')
+    Usage(cache_creation=CacheCreation(ephemeral_1h_input_tokens=0, ephemeral_5m_input_tokens=0), cache_creation_input_tokens=0, cache_read_input_tokens=9288, input_tokens=227, output_tokens=368, server_tool_use=None, service_tier='standard')
 
 ``` python
 chat.use
 ```
 
-    In: 245; Out: 597; Cache create: 0; Cache read: 18574; Total Tokens: 19416; Search: 0
+    In: 230; Out: 578; Cache create: 9288; Cache read: 9288; Total Tokens: 19384; Search: 0
 
 ## Tool use
 
@@ -479,8 +483,7 @@ pr
 
     'What is 604542+6458932?'
 
-To use tools, pass a list of them to
-[`Chat`](https://claudette.answer.ai/core.html#chat):
+To use tools, pass a list of them to `Chat`:
 
 ``` python
 chat = Chat(model, sp=sp, tools=[sums])
@@ -498,21 +501,21 @@ r
 
     Finding the sum of 604542 and 6458932
 
-ToolUseBlock(id=‘toolu_01UUWNqtkMHQss345r1ir17q’, input={‘a’: 604542,
-‘b’: 6458932}, name=‘sums’, type=‘tool_use’)
+\[ToolUseBlock(id=‘toolu_01L2drxj9NRcaRsZA9bUidRP’, input={‘a’: 604542,
+‘b’: 6458932}, name=‘sums’, type=‘tool_use’)\]
 
 <details>
 
-- id: `msg_0199dXeVq11rc2veGNJVWc4k`
+- id: `msg_01HJgvZuxtVaV6bBpUFHsVLu`
 - content:
-  `[{'id': 'toolu_01UUWNqtkMHQss345r1ir17q', 'input': {'a': 604542, 'b': 6458932}, 'name': 'sums', 'type': 'tool_use'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'id': 'toolu_01L2drxj9NRcaRsZA9bUidRP', 'input': {'a': 604542, 'b': 6458932}, 'name': 'sums', 'type': 'tool_use'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `tool_use`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 445, 'output_tokens': 53, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 718, 'output_tokens': 53, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -523,20 +526,20 @@ happens automatically:
 chat()
 ```
 
-604542 + 6458932 = 7,063,474
+The sum of 604542 + 6458932 = **7,063,474**
 
 <details>
 
-- id: `msg_014wmCxnwQpgvnqKKto3RrxA`
+- id: `msg_01AT3GKYV1bXWuDpAd3yLLYv`
 - content:
-  `[{'citations': None, 'text': '604542 + 6458932 = 7,063,474', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'The sum of 604542 + 6458932 = **7,063,474**', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 527, 'output_tokens': 19, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 710, 'output_tokens': 24, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -548,12 +551,11 @@ You can see how many tokens have been used at any time by checking the
 chat.use
 ```
 
-    In: 972; Out: 72; Cache create: 0; Cache read: 0; Total Tokens: 1044; Search: 0
+    In: 1428; Out: 77; Cache create: 0; Cache read: 0; Total Tokens: 1505; Search: 0
 
 We can do everything needed to use tools in a single step, by using
-[`Chat.toolloop`](https://claudette.answer.ai/toolloop.html#chat.toolloop).
-This can even call multiple tools as needed solve a problem. For
-example, let’s define a tool to handle multiplication:
+`Chat.toolloop`. This can even call multiple tools as needed solve a
+problem. For example, let’s define a tool to handle multiplication:
 
 ``` python
 def mults(
@@ -582,81 +584,82 @@ for o in chat.toolloop(pr): display(o)
 
     Finding the sum of 604542 and 6458932
 
-I’ll help you calculate (604542+6458932)\*2. I need to first add the two
-numbers, then multiply the result by 2.
+I’ll help you calculate (604542+6458932)\*2 by first adding the two
+numbers, then multiplying the result by 2.
 
 <details>
 
-- id: `msg_019DZznw7qiEM2uEEcpNTnKs`
+- id: `msg_01WtZPpgPaBFbTrsgXMjrjr9`
 - content:
-  `[{'citations': None, 'text': "I'll help you calculate (604542+6458932)*2. I need to first add the two numbers, then multiply the result by 2.", 'type': 'text'}, {'id': 'toolu_016NZ7MtE8oWHs5BSkxMcAN7', 'input': {'a': 604542, 'b': 6458932}, 'name': 'sums', 'type': 'tool_use'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': "I'll help you calculate (604542+6458932)*2 by first adding the two numbers, then multiplying the result by 2.", 'type': 'text'}, {'id': 'toolu_01ASZL8TCupx5nsZqm2xoMKA', 'input': {'a': 604542, 'b': 6458932}, 'name': 'sums', 'type': 'tool_use'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `tool_use`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 539, 'output_tokens': 105, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 722, 'output_tokens': 104, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
-``` json
+``` python
 { 'content': [ { 'content': '7063474',
-                 'tool_use_id': 'toolu_016NZ7MtE8oWHs5BSkxMcAN7',
+                 'tool_use_id': 'toolu_01ASZL8TCupx5nsZqm2xoMKA',
                  'type': 'tool_result'}],
   'role': 'user'}
 ```
 
     Finding the product of 7063474 and 2
 
-Now I’ll multiply that result by 2:
+\[ToolUseBlock(id=‘toolu_01Tm19WLH85kKZ7aFmeYHafz’, input={‘a’: 7063474,
+‘b’: 2}, name=‘mults’, type=‘tool_use’)\]
 
 <details>
 
-- id: `msg_01LmQiMRWAtTQz6sChqsbtMy`
+- id: `msg_01DR9ZrY1Mg9e3LSacX2Qp8f`
 - content:
-  `[{'citations': None, 'text': "Now I'll multiply that result by 2:", 'type': 'text'}, {'id': 'toolu_019BQuhBzEkCWC1JMp6VtcfD', 'input': {'a': 7063474, 'b': 2}, 'name': 'mults', 'type': 'tool_use'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'id': 'toolu_01Tm19WLH85kKZ7aFmeYHafz', 'input': {'a': 7063474, 'b': 2}, 'name': 'mults', 'type': 'tool_use'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `tool_use`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 659, 'output_tokens': 82, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 841, 'output_tokens': 71, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
-``` json
+``` python
 { 'content': [ { 'content': '14126948',
-                 'tool_use_id': 'toolu_019BQuhBzEkCWC1JMp6VtcfD',
+                 'tool_use_id': 'toolu_01Tm19WLH85kKZ7aFmeYHafz',
                  'type': 'tool_result'}],
   'role': 'user'}
 ```
 
 The answer is **14,126,948**.
 
-To break it down: - 604,542 + 6,458,932 = 7,063,474 - 7,063,474 × 2 =
+To break it down: - 604542 + 6458932 = 7,063,474 - 7,063,474 × 2 =
 14,126,948
 
 <details>
 
-- id: `msg_0119DdeQ2goLFwGkXTXHFDsv`
+- id: `msg_01Svk5xvxtWJCLw2rGteUoQV`
 - content:
-  `[{'citations': None, 'text': 'The answer is **14,126,948**.\n\nTo break it down:\n- 604,542 + 6,458,932 = 7,063,474\n- 7,063,474 × 2 = 14,126,948', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'The answer is **14,126,948**.\n\nTo break it down:\n- 604542 + 6458932 = 7,063,474\n- 7,063,474 × 2 = 14,126,948', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 756, 'output_tokens': 61, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 927, 'output_tokens': 58, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
 ## Structured data
 
 If you just want the immediate result from a single tool, use
-[`Client.structured`](https://claudette.answer.ai/core.html#client.structured).
+`Client.structured`.
 
 ``` python
 cli = Client(model)
@@ -704,7 +707,7 @@ class President:
 cli.structured("Provide key information about the 3rd President of the United States", President)
 ```
 
-    [President(first='Thomas', last='Jefferson', spouse='Martha Wayles Skelton Jefferson', years_in_office='1801-1809', birthplace='Shadwell, Virginia', birth_year=1743)]
+    [President(first='Thomas', last='Jefferson', spouse='Martha Wayles Skelton', years_in_office='1801-1809', birthplace='Shadwell', birth_year=1743)]
 
 ## Images
 
@@ -719,8 +722,7 @@ Image(filename=fn, width=200)
 <img src="index_files/figure-commonmark/cell-35-output-1.jpeg"
 width="200" />
 
-We create a [`Chat`](https://claudette.answer.ai/core.html#chat) object
-as before:
+We create a `Chat` object as before:
 
 ``` python
 chat = Chat(model)
@@ -738,20 +740,20 @@ Prompts to Claudette can be lists, containing text, images, or both, eg:
 chat([img, "In brief, what color flowers are in this image?"])
 ```
 
-The flowers in this image are purple.
+The flowers in this image are **purple**.
 
 <details>
 
-- id: `msg_01N2NCd5JW3gNsGysgmyMx9F`
+- id: `msg_01JPnMvi1UmuspTeQYG8RQiC`
 - content:
-  `[{'citations': None, 'text': 'The flowers in this image are purple.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'The flowers in this image are **purple**.', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 110, 'output_tokens': 11, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 110, 'output_tokens': 12, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -761,7 +763,7 @@ The image is included as input tokens.
 chat.use
 ```
 
-    In: 110; Out: 11; Cache create: 0; Cache read: 0; Total Tokens: 121; Search: 0
+    In: 110; Out: 12; Cache create: 0; Cache read: 0; Total Tokens: 122; Search: 0
 
 Alternatively, Claudette supports creating a multi-stage chat with
 separate image and text prompts. For instance, you can pass just the
@@ -774,27 +776,34 @@ chat = Chat(model)
 chat(img)
 ```
 
-What an adorable puppy! This looks like a Cavalier King Charles Spaniel
-puppy with the classic Blenheim coloring (chestnut and white markings).
-The puppy has those characteristic sweet, gentle eyes and silky coat
-that the breed is known for. The setting with the purple flowers in the
-background makes for a lovely portrait - it really highlights the
-puppy’s beautiful coloring and sweet expression. Cavalier King Charles
-Spaniels are known for being friendly, affectionate companions. Is this
-your puppy?
+This is an adorable photo of a Cavalier King Charles Spaniel puppy! The
+puppy has the breed’s characteristic features:
+
+- **Blenheim coloring** - beautiful chestnut brown and white markings
+- **Long, silky ears** with feathering
+- **Large, expressive dark eyes** that give them their sweet, gentle
+  appearance
+- **White blaze** down the center of the face
+
+The puppy is posed charmingly on grass with purple flowers (possibly
+asters) in the background, creating a lovely garden setting. Cavalier
+King Charles Spaniels are known for being affectionate, gentle, and
+excellent companion dogs. This little one looks absolutely precious!
+
+Is this your puppy, or are you just admiring this sweet photo?
 
 <details>
 
-- id: `msg_01Jat1obwo79eEz5JMFAF4Mh`
+- id: `msg_01SvmG6sdVicpzm3P8PqBQwC`
 - content:
-  `[{'citations': None, 'text': "What an adorable puppy! This looks like a Cavalier King Charles Spaniel puppy with the classic Blenheim coloring (chestnut and white markings). The puppy has those characteristic sweet, gentle eyes and silky coat that the breed is known for. The setting with the purple flowers in the background makes for a lovely portrait - it really highlights the puppy's beautiful coloring and sweet expression. Cavalier King Charles Spaniels are known for being friendly, affectionate companions. Is this your puppy?", 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': "This is an adorable photo of a Cavalier King Charles Spaniel puppy! The puppy has the breed's characteristic features:\n\n- **Blenheim coloring** - beautiful chestnut brown and white markings\n- **Long, silky ears** with feathering\n- **Large, expressive dark eyes** that give them their sweet, gentle appearance\n- **White blaze** down the center of the face\n\nThe puppy is posed charmingly on grass with purple flowers (possibly asters) in the background, creating a lovely garden setting. Cavalier King Charles Spaniels are known for being affectionate, gentle, and excellent companion dogs. This little one looks absolutely precious!\n\nIs this your puppy, or are you just admiring this sweet photo?", 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 98, 'output_tokens': 118, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 98, 'output_tokens': 173, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -802,23 +811,24 @@ your puppy?
 chat('What direction is the puppy facing?')
 ```
 
-The puppy is facing toward the camera/viewer. You can see the puppy’s
-face straight-on, with both eyes visible and looking directly at the
-camera. The puppy appears to be lying down with its head up and oriented
-forward, giving us a clear frontal view of its sweet face.
+The puppy is facing **directly toward the camera** (toward the viewer).
+The puppy appears to be lying down with its head up, looking straight
+ahead at whoever is taking the photograph. This frontal view gives us a
+clear look at the puppy’s face, including both eyes, the white blaze
+down the center of its face, and its adorable expression.
 
 <details>
 
-- id: `msg_018EqaD7EFveLCzSPbQmMMuE`
+- id: `msg_01G9c6cJePhHroH1u27ovV7o`
 - content:
-  `[{'citations': None, 'text': "The puppy is facing toward the camera/viewer. You can see the puppy's face straight-on, with both eyes visible and looking directly at the camera. The puppy appears to be lying down with its head up and oriented forward, giving us a clear frontal view of its sweet face.", 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': "The puppy is facing **directly toward the camera** (toward the viewer). The puppy appears to be lying down with its head up, looking straight ahead at whoever is taking the photograph. This frontal view gives us a clear look at the puppy's face, including both eyes, the white blaze down the center of its face, and its adorable expression.", 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 227, 'output_tokens': 65, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 282, 'output_tokens': 79, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -826,25 +836,29 @@ forward, giving us a clear frontal view of its sweet face.
 chat('What color is it?')
 ```
 
-The puppy has a chestnut (reddish-brown) and white coat. The ears and
-patches around the eyes are a rich chestnut or reddish-brown color,
-while the face has a white blaze down the center and the chest/front
-appears to be white as well. This is the classic “Blenheim” color
-pattern that’s common in Cavalier King Charles Spaniels - the
-combination of chestnut and white markings.
+The puppy is **brown (chestnut) and white**.
+
+Specifically: - The ears and patches around the eyes are a rich chestnut
+brown/reddish-brown color - The face has white markings, including a
+white blaze down the center - The visible parts of the body appear to be
+predominantly white
+
+This color pattern is called “Blenheim” in Cavalier King Charles
+Spaniels - it’s one of the most popular and recognizable color
+combinations for this breed.
 
 <details>
 
-- id: `msg_01HzUTvRziMrSfdEjbo1kHnh`
+- id: `msg_016Upuk9NJ5rfoanKi9vHD4E`
 - content:
-  `[{'citations': None, 'text': 'The puppy has a chestnut (reddish-brown) and white coat. The ears and patches around the eyes are a rich chestnut or reddish-brown color, while the face has a white blaze down the center and the chest/front appears to be white as well. This is the classic "Blenheim" color pattern that\'s common in Cavalier King Charles Spaniels - the combination of chestnut and white markings.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'The puppy is **brown (chestnut) and white**. \n\nSpecifically:\n- The ears and patches around the eyes are a rich chestnut brown/reddish-brown color\n- The face has white markings, including a white blaze down the center\n- The visible parts of the body appear to be predominantly white\n\nThis color pattern is called "Blenheim" in Cavalier King Charles Spaniels - it\'s one of the most popular and recognizable color combinations for this breed.', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 300, 'output_tokens': 103, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 369, 'output_tokens': 115, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -856,7 +870,7 @@ that number of input tokens increases quickly with this kind of chat.
 chat.use
 ```
 
-    In: 625; Out: 286; Cache create: 0; Cache read: 0; Total Tokens: 911; Search: 0
+    In: 749; Out: 367; Cache create: 0; Cache read: 0; Total Tokens: 1116; Search: 0
 
 ## Extended Thinking
 
@@ -889,8 +903,12 @@ has_extended_thinking_models
 ```
 
     {'claude-3-7-sonnet-20250219',
+     'claude-opus-4-1-20250805',
      'claude-opus-4-20250514',
-     'claude-sonnet-4-20250514'}
+     'claude-opus-4-5',
+     'claude-sonnet-4-20250514',
+     'haiku-4-5',
+     'sonnet-4-5'}
 
 ``` python
 chat = Chat(model)
@@ -900,9 +918,9 @@ chat = Chat(model)
 chat('Write a sentence about Python!', maxthinktok=1024)
 ```
 
-Python is a versatile, high-level programming language known for its
-readable syntax and extensive libraries, making it popular for
-everything from web development to data science and machine learning.
+Python is a versatile, beginner-friendly programming language known for
+its clean syntax and powerful applications in web development, data
+science, automation, and artificial intelligence.
 
 <details>
 
@@ -911,27 +929,25 @@ everything from web development to data science and machine learning.
 Thinking
 </summary>
 
-The user is asking for a sentence about Python. Since they didn’t
-specify, this could refer to either: 1. Python the programming language
-2. Python the snake
-
-Given the context and common usage, they’re most likely referring to the
-programming language Python. I’ll write a sentence about Python the
-programming language that’s informative and concise.
+The user wants me to write a sentence about Python. Python could refer
+to either the programming language or the snake. Given the context of a
+general request without additional specifics, I’ll assume they mean the
+programming language since that’s a common topic. I’ll write an
+informative and positive sentence about it.
 </details>
 
 <details>
 
-- id: `msg_017EgYhUjsQxWkXN1zrRjFxK`
+- id: `msg_01Nf6xLjvdfweajfotWSByfQ`
 - content:
-  `[{'signature': 'EokECkYIBBgCKkDNuftW7kYi6z6RSuzj4DNdtNRxcj486/U8U2NJHg51M+vGmQ1eN7ypz+w4/tpZCFHgWR9KFPXElnHrp3SkoWJrEgzJthIeSKqmoUbrP5YaDKGgUdib0TYhZriKcCIwDrQ2GTZ3D7zE0RVouKJLbzyRl+sQ6FQ+NwNQb5qrHw5Ylmzqxxk4Sa4GuzOEY8zVKvAC+7LfNqCd7jBjPVqaoSRmCubkKuWWeg60G39UCYm/W9VUsrDT1IHLTvOuK3KOYTQL1zqWt1XlBFj52haZIWRmjVU1w2S8EyKIJIThNRYFfT9CDuAeCYwUae8BFL4wm/MEUw+2tDNH3ei7JUvb4sk17cTrePvzpiQNtmHN8TctDBP2RgD7PpTUbjNUsvoRJFBSLLfNsd8wlvAkcph96fDV5dUJ/W3mkluG4XbTTY3ns/rlikAFLTphaoXeqM6buvm889Sep8BQdHuujHcuKWD3auTusayXE5O/9yYcWrU9qPxZ2bxF72tZ1Y65bTBYzhm9ohtB1LTy0x0XvOS76gfGZ8XaJ4vj3OMz1Cn5GSTCNbELTHHVBh5azPSCI9Qu44/ZBE2ZsFA0mtPCiP8cyhZmzAaHFnz2QaKwuTlfz5VnDPmNSNy8rqHywWlkMMA4g9+0SDZSxYJkCYBO+OUs1gNqlwwJQUyYOc1SEmpBkVQee2kYAQ==', 'thinking': "The user is asking for a sentence about Python. Since they didn't specify, this could refer to either:\n1. Python the programming language\n2. Python the snake\n\nGiven the context and common usage, they're most likely referring to the programming language Python. I'll write a sentence about Python the programming language that's informative and concise.", 'type': 'thinking'}, {'citations': None, 'text': 'Python is a versatile, high-level programming language known for its readable syntax and extensive libraries, making it popular for everything from web development to data science and machine learning.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'signature': 'EusDCkYIChgCKkCEb9//O9Ukuzu0YNXZzFpSF/0Kqi9xmlw8RTkxMf5G0DNjfYnm4ikuuiHI6c9ZreTpQvx8zZc2/JLO9LBYJbfAEgxVZO4o6S1wQTbxI1gaDIatm6hlCv32E5azAyIw4ooJQR+Mb19spCwQGVsblg455LFQWf5jjeW9cNKHP9HdhYpfonLZV8i13QRiwZGiKtICf6mGM0EezCc95fogMMuGPYFNNNpBqZ42F5jhxASf5uMEZohoUUNVnUd9Lm57CxK4O+Dn5yvLdhTOErVSuGgiZK2fUWALh1iPcZV95tC3IflGP0aJcC9DYHKkzYBCMsNLeedB+7CZpvgTPsmPW+vZUzoYepqG2kIOk8qp7P8eQF722PDODHBECo+d+D1SuZHdexumKgOmajqMUfjd11Fg8Db8HpgiPgd56lHzDKrPMTjQx/gi4+J6u8SgkPff31psE6Sp9WXorncioJlVxUKjGtH41W08nAvlSXRzFyipFXeQ7nedH6h8dsZ3OYXdLHkMzEve6mRGdSRw8zrvqqbhZpihxTqA7XjtRFoVw09Np3L4w0J/3vblI9yGx2Hbvog7cm8g3UgROllWB3N20UIk0Z55qnFXLfWVvS9TTE4zxGx8RltK1CqzSSUO2tZyilEqHTsYAQ==', 'thinking': "The user wants me to write a sentence about Python. Python could refer to either the programming language or the snake. Given the context of a general request without additional specifics, I'll assume they mean the programming language since that's a common topic. I'll write an informative and positive sentence about it.", 'type': 'thinking'}, {'citations': None, 'text': 'Python is a versatile, beginner-friendly programming language known for its clean syntax and powerful applications in web development, data science, automation, and artificial intelligence.', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 41, 'output_tokens': 119, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 42, 'output_tokens': 106, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -944,8 +960,7 @@ questions.
 
 Unlike client-side tools (where you provide functionality), server-side
 tools are managed by Anthropic. Claudette makes these easy to use with
-helper functions like
-[`search_conf()`](https://claudette.answer.ai/core.html#search_conf).
+helper functions like `search_conf()`.
 
 ``` python
 chat = Chat(model, sp='Be concise in your responses.', tools=[search_conf()])
@@ -954,42 +969,32 @@ r = chat(pr)
 r
 ```
 
-Based on the search results, here’s the current weather information for
-San Diego:
+Based on current weather data for San Diego, CA:
 
-Today (Saturday, June 21st) has a high of 67°F [^1] [^2] with cloudy
-conditions early with partial sunshine expected later [^3]. Winds are
-from the SSW at 10 to 15 mph [^4].
+**Current Conditions (December 2, 2024):** - Partly cloudy with a high
+around 65°F [^1] - Winds SW at 5 to 10 mph [^2] - Low near 50°F with
+light and variable winds [^3]
 
-Tonight’s low will be around 62°F with overcast conditions and SSW winds
-at 10 to 15 mph [^5].
-
-Temperatures are running about 4-7 degrees below normal for most areas
-[^6], making it a cooler day than typical for this time of year in San
-Diego.
-
-Air quality is currently at an unhealthy level for sensitive groups, so
-those with breathing sensitivities should reduce outdoor time if
-experiencing symptoms [^7].
+The weather is pleasant with partly cloudy skies and mild temperatures
+typical for San Diego in early December.
 
 <details>
 
-- id: `msg_01Kg3aNFF7ibUcWZxPpFNmu8`
+- id: `msg_01KdNccMqknT22eaDGqE453N`
 - content:
-  `[{'id': 'srvtoolu_01YazfLE5GfK4ET2Z4rsfcuz', 'input': {'query': 'San Diego weather today'}, 'name': 'web_search', 'type': 'server_tool_use'}, {'content': [{'encrypted_content': 'EqcCCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDF5HWNC1GnRw10SRnBoMsafoy8BqdMy4chO3IjALzgdeA/d4dT1Qx7JKFu6XeXmrHYIe2lxVFl7TqZkRDnKmPpA6mnvpkwGh9eW8RJgqqgGtR4kEv8KoMeWf9VHjh1oYyscLkN5LJq00R4X3C/Cfw9oLLdIAiN9tvq9g2Rzm0Qb/IP5GcdVfiwx7w5dRfL67oaWQ5IFIXSvv9ByLW/ERFI30UKhhKFYumApVuZEIge6CL0j56OQFXAkPVENWIlSnro+9BIKgf866WWvRo0kx2d+SiX9p3ainG+Zqbl55Bq+mvyOUgVabtSEfr+oY6FQPJYYT9ad0QxYUOxgD', 'page_age': '3 days ago', 'title': '10-Day Weather Forecast for San Diego, CA - The Weather Channel | weather.com', 'type': 'web_search_result', 'url': 'https://weather.com/weather/tenday/l/San+Diego+CA?canonicalCityId=3b2b39ed755b459b725bf2a29c71d678'}, {'encrypted_content': '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', 'page_age': '3 days ago', 'title': 'San Diego, CA Weather Forecast | AccuWeather', 'type': 'web_search_result', 'url': 'https://www.accuweather.com/en/us/san-diego/92101/weather-forecast/347628'}, {'encrypted_content': 'Er0ECioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDBGutrl0Yo/Ph3ytgxoMmv0PMZzhuX1bUMAaIjB8A47OiTekaB3+wTaHtqniXxv1Syc6JTwDJgaWgpy/MxfY+iOIS58xXsHOd7d/vrUqwAOQc9TMOqSb0LGZCGaGxIwiXICeBOu9KYGmqzNtUJm31yQlCGwdOFeznCgec0B2/jhLUZMpoDuoL3ayVUeBYC7IlyW4Lrh7DR8+MUOf27YxozzhkdWKDDDqCf0hN40Qn69bGemDOFejCWrTyCj8ffYa29MAKRcAvQv0TQUehsNOy0xKYzeBA2z9zjzZp9GOesvqBv5/2AxQrVwygU31bLYEeiqHqLrfeQ798HK9oDFlAiHaS/gWmpK1+0d3UA+Y5KCKipBmUxy15LkEmoG0MoG3/OEDZ7mOGuuY5RqCW4hkdT4dzm6OsKfmiLoDG/XI2HNkpcTnCd3tO0yUZdwY3lX4vSjAS2wvFxNsl7b8YbaKM/U8H3JaTVntwyh7GHWYezHYaYXNiMK05KcQMKJlP/bZx82sQkq83jl15k55Nf5NR/R/1PHi/fqzLDwPOSug5RJ8dwdduWd1SF4qcfStBaOZ4fRdTwbxJgiAC6gmxWMAGfXg29iVSNsTBYVaGk+GPrUSIFxU0x36xejO0Vaz7wHL6XPwjvXMhVrWbuf5xMXKRNW3XG3X0AEB7h40x+0MN23BmmJ9G6+JQ5Ngog6z2An4GAM=', 'page_age': '3 days ago', 'title': 'San Diego weather forecast – NBC 7 San Diego', 'type': 'web_search_result', 'url': 'https://www.nbcsandiego.com/weather/'}, {'encrypted_content': 'EpcCCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDGlljWS7qosG4mSt3BoM6gy+Gh0f2zdXJ8kAIjAL5PfnNZR7Vex2zcFoqLody/xA+Yyoob62LVGMQ4+EhXd4CKgvxQEfpQLQgVvIH3UqmgGByQGU45dvgEJrKexyCEvra2CIAoYOTUiKNt6p7dVfp8++dfq28UU2mt5h10bL8ul8y0xeBu6new/tfwFJ6+GS/Bh6p+M+p87Jy65QQ/dgMhV+M7q3EAQUZjh642YMayI4nimm2yIwbLzNRXEszsp2kdmKKhxDpO3C5wp8fWLy5UpWvimjh5WSMnAzEpMoVDqD99FavgHvaPF7GAM=', 'page_age': '3 days ago', 'title': 'Weather Forecast and Conditions for San Diego, CA - The Weather Channel | Weather.com', 'type': 'web_search_result', 'url': 'https://weather.com/weather/today/l/San+Diego+CA?canonicalCityId=3b2b39ed755b459b725bf2a29c71d678'}, {'encrypted_content': 'ErEDCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDKDodoc/BpOij6btVBoMdtlDIIQ1rjzAl3XyIjAUXhC+GWPaQwx74WpJR7Xo+cVP0RjwhWd5LPSL+skOIE8sHVqz0Ry9jmq5jGri3wcqtAJrH5qNCAGieGFHQijAS1lfA2rn0EDH/tLBmC4nKW0MGQz/NLn49FuAcJuEZrw2149zcJ88XQ18hVEhWTkZ/BNEBujb9+M+QthIUUOPf6RplEX+DThq1KIuqbR0XBh71qThLM5ZfBjcvYS4429hpEP5DJo2FP0nqr9Ps8GX/hvIik33EXc4X3x16d649qqcRFwByb1DhE+NZVTiuu4WfljWXWBs+17ezkxxWazj3E9GtLBIL98fnMoOf4p9oTI8EgWe4RjcGqEaI6DWqlGquNgkc4IeqlzVkjWP4v90HoI7oegcDKtK/n+8pNaGqyBQizgf1NglM2gRBj3cZ9kt7cDX8p1KpmXrGsOSEK3mn6RAnjlsFQ2x7UjM7l980KCVKnqeguR0ZkCsvB+KM0AputjxlU+KrBgD', 'page_age': '3 days ago', 'title': 'San Diego, CA', 'type': 'web_search_result', 'url': 'https://www.weather.gov/sgx/'}, {'encrypted_content': 'EpkCCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDLXJ+1Ii8XIJ7AwW/xoMMbTKEdT8hw2J9bdSIjBYWJur7pQQqNijCyZjeN+VSYcaZe7xE/09hGS23TOjFLdvrOhGAMVSd3e2IDGUHCEqnAG6GJZO/sDcDEeEn/sobNJbNjM9VfNoJZEg+f/lZ+KXtMJELQ2Q14ot0iqQ0qKEjDxz3OMLkAYJg3uqeVMOq5QLgz6MNANEoCU+koTqIiYGZ++8Y0tKdtVD/Xrm0QW0fFkdJcN1PVt+6fN8aDJ5+95phOw5vEmRS9FRWg6aLDIwpxaNJ6z+Wbpff8zoSGUcPZFaFIUjAAU6qnx8kRoYAw==', 'page_age': None, 'title': 'San Diego, CA Weather Forecast | KGTV | kgtv.com', 'type': 'web_search_result', 'url': 'https://www.10news.com/weather'}, {'encrypted_content': 'EpQCCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDHL0i7qnzUCM4zRRAhoMAv3yQhl4BrqFyb0nIjBsyvNyrS90lUKCO/9admV9eU8x96+nDdrodoVAe9lpT2fNstMu4pS2Aer192MKKnwqlwGnu1DfFtpu/sSeugS3SUtYxT+ulZYw+ZQwhqLMOf+UadP2PrCAEDh5CM2pF4fMHRdt9GBYTgOA/3ug6W2Ci30q5QXwdiNC/7X2KQV6QrU83m//vy92K8PO9dwqv4B0T8uCSY18O+BtHHlZrzmzPgIWm4OTP2+Blh+f3X+yRubR9JiBehxtgS/IGmdWhzv6QjIbcFy5bhNDGAM=', 'page_age': '1 week ago', 'title': 'Hourly Weather Forecast for San Diego, CA - The Weather Channel | Weather.com', 'type': 'web_search_result', 'url': 'https://weather.com/weather/hourbyhour/l/San+Diego+CA?canonicalCityId=3b2b39ed755b459b725bf2a29c71d678'}, {'encrypted_content': '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', 'page_age': None, 'title': 'San Diego, CA 10-Day Weather Forecast | Weather Underground', 'type': 'web_search_result', 'url': 'https://www.wunderground.com/forecast/us/ca/san-diego'}, {'encrypted_content': 'Ev0ECioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDFqrWvXcDBaRhAEIERoMEMwkIlYRNrbpob8qIjAGpulVwN56DZ4z4+PuEB3gdYm6QZ5Qvq+6RFvOLnEGDg+mpsIvb2TL4iauDizcEsUqgAT3/Sza241GQ6OmRz38xfUdXYqE5zatMSVDZ8Pzsd11fgBJg8voUcxKfPRPQWlA8FYW8+K4vDvv5cahR9rbVN829R/VQxq7YdcMsD9D5pbk9WButOmQLwI5/MsvnKo0MJ2e6kVcI1DVTwwHxoF0AJdkXUm/9x5danZ35QmA3FIR+7AOBCgtlOmwwIO1nTB+x6+8gf8DB0Jsgv6scqI/PqYxTYH8pZUEs3sA0pXQWJIcbtbWPRqxvfr6KYTtBAKJcr4XmsOMdi4OhVxzXhed1OjB1Jvebhi7Z+CbOOEZBuL2T7inzxoNlHvd3rhuZoDzpb9IWEMx/29fjwWhy+ztWi4Fdl25QgpWokl9cjDtq+6DEkf97+5ks6oVZU1dKoKq2y6S7cT3SL30IOzpdNox9Nh9FrOZeui/aT2zD7imuB+dyx9ffHi07Ulje7R9UWwBvDzRPMP4Ilwe4nrcQWWloso80KTfIixUTmel1bPKxVdrag/2+4kD6ahHpm2cLazWqTc+GvVY5+IRb2C5Y6pve4tWPVZC584151GHbdDZB2FamZJsdBlVL5VAF7Cz2U2mukxcuFF7Vwh3lpvpuqkldp4yWf2UJVpGMOOgDMgRi9qn+fAqE9jEIKoqXRhrVnKlgAlMGpnFfxu1IvxOLQQRqCNRltm5whIy5YhZa+7bllx+NRgD', 'page_age': '3 days ago', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}, {'encrypted_content': 'Ev8CCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDOOoeUPUoDED8O83ZhoM30uUue3UQ1WQ6At6IjD+k7S7lYoiPFc5urIX1kWyFxcLj14bmNmI9YackQTQAU27o6IGbFdwaU+40URG2xQqggLYvUzF4uC9bk9e+C5CbKLU1WAsE7Nsb3YpFYsFiwMKqPamqEVSZE/xxUGQZ9w5tbtftdchhIs0bupnPj+G3BgO+ivdO9VcHBrqJwOk+hQ+XhQp3kLRubgZ9ozPpTZDK0xhpuFh18mFwsHgi/dIH478C1yYA50B0d/qL5C4V6NdYfDYsOXL0Ce1y4L8JxlUi//BPq23m1FfJeVo0vPYKTWm0D2TGTEnLygV9ZI9/wUF5H+gDYimj/QJZW1MWWf7bUQl85I1AyroDE2h8pae6FT0VTVWWIUJiBOWr48xbjieS+LHRxP7/XhpZpI2x0zz3WLi1BYdxHH04yxnjxLcQILrOuoYAw==', 'page_age': '5 days ago', 'title': 'National Weather Service', 'type': 'web_search_result', 'url': 'https://forecast.weather.gov/zipcity.php?inputstring=San+Diego,CA/'}], 'tool_use_id': 'srvtoolu_01YazfLE5GfK4ET2Z4rsfcuz', 'type': 'web_search_tool_result'}, {'citations': None, 'text': "Based on the search results, here's the current weather information for San Diego:\n\n", 'type': 'text'}, {'citations': [{'cited_text': 'TomorrowSat 06/21 High · 67 °F · 14% Precip. ', 'encrypted_index': 'Eo8BCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDKwATF21Da6JaeprrRoMR4n2dYDzq6Grz6kOIjDubzeZ5yWRJE4JTY/En0I9Ue7hW3xNHVY1Nb651cmT84e3E/CK5IihYjOjT0ri+bMqEzkJobhLc+mcf18NFKDVD/eXWJkYBA==', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}, {'cited_text': 'High 67F. ', 'encrypted_index': 'Eo8BCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDBZRJenhcEsF45RP3hoM9byW9q+/yaWr+G32IjAOpd1oMmv1j3abI8JHjvI1b5ZvEPvFR0RzxtY1jsxEyRv9IJkysuqnmbSwH3g32TgqE+VO+8ZZPNjG9foScv6WV79YDUAYBA==', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': 'Today (Saturday, June 21st) has a high of 67°F', 'type': 'text'}, {'citations': None, 'text': ' with ', 'type': 'text'}, {'citations': [{'cited_text': '/ 0.00 °in Cloudy early with partial sunshine expected late. ', 'encrypted_index': 'Eo8BCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDB4nMEZc/F7OchMulRoMGN8vERmCYSPIeM52IjBEWjKA8pyazlviIcAv3VdKXXstJzWI89Lth9GVQTgJe+aHBo6Z9RixGwe9H65I4iEqE6r+cdWvSki3A5y7liT1a2+EuPgYBA==', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': 'cloudy conditions early with partial sunshine expected later', 'type': 'text'}, {'citations': None, 'text': '. ', 'type': 'text'}, {'citations': [{'cited_text': 'Winds SSW at 10 to 15 mph. ', 'encrypted_index': 'Eo8BCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDB45Fg4fI2lZagCjPRoM44KF0iEojWBopwrHIjBhn7dgVM1Ff/cqtJ/lTjfQ/jwVGUPTMJqvlWxrNi2vlcn6nHSZw+cUefs/Ruz/GNgqE6jMHyEpfOkI5cEy1xxL1qwAZvIYBA==', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': 'Winds are from the SSW at 10 to 15 mph', 'type': 'text'}, {'citations': None, 'text': '.\n\n', 'type': 'text'}, {'citations': [{'cited_text': 'Low 62F. Winds SSW at 10 to 15 mph. ', 'encrypted_index': 'EpEBCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDGs1z0BKFApU+3H2sxoMHemxpcDkrIGd4oSRIjAWWpByOKdjFHplptGY/sqWHuZVPAxLushiCw0j+aLQ3+bpwzSikTDw6Eb075la0fYqFeOQNDFP6pV830agKs390gtIQ9hn2RgE', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': "Tonight's low will be around 62°F with overcast conditions and SSW winds at 10 to 15 mph", 'type': 'text'}, {'citations': None, 'text': '.\n\n', 'type': 'text'}, {'citations': [{'cited_text': 'Cooler today with highs around 4-7 degrees below normal for most areas, still slightly above normal in the lower deserts. ', 'encrypted_index': 'Eo8BCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDKmS4xmv51SRhiupjBoM1jB2H6k2FU08pQ3GIjAV+DJ6rRuV2b6Q7ignq8PgwpnBySIrcI0FjJyUkxWXMUqYQYSPaTtiNLaSUJi1kh4qE+SXxbI2WryAsUjDE9uQS3F/91QYBA==', 'title': 'San Diego, CA', 'type': 'web_search_result_location', 'url': 'https://www.weather.gov/sgx/'}], 'text': 'Temperatures are running about 4-7 degrees below normal for most areas', 'type': 'text'}, {'citations': None, 'text': ', making it a cooler day than typical for this time of year in San Diego.\n\n', 'type': 'text'}, {'citations': [{'cited_text': 'The air has reached a high level of pollution and is unhealthy for sensitive groups. Reduce time spent outside if you are feeling symptoms such as dif...', 'encrypted_index': 'EpEBCioIBBgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDK8D4vc8KfCrlx9emxoMMLnROCL/VkErH3i/IjA/9/wpz9prNlBSXXcsTY2S+xdsPRDTNhPl7sYwMQoZ1OAvK8zbv5m0QT4Z0rVOkO8qFX/4Kq1l4tkCVlYlPmm9TE6ED9r0ABgE', 'title': 'San Diego, CA Weather Forecast | AccuWeather', 'type': 'web_search_result_location', 'url': 'https://www.accuweather.com/en/us/san-diego/92101/weather-forecast/347628'}], 'text': 'Air quality is currently at an unhealthy level for sensitive groups, so those with breathing sensitivities should reduce outdoor time if experiencing symptoms', 'type': 'text'}, {'citations': None, 'text': '.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'id': 'srvtoolu_019oGPT86A992v8CcJa7zujv', 'input': {'query': 'San Diego weather today'}, 'name': 'web_search', 'type': 'server_tool_use'}, {'content': [{'encrypted_content': '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', 'page_age': '1 week ago', 'title': 'San Diego, CA Weather Forecast | AccuWeather', 'type': 'web_search_result', 'url': 'https://www.accuweather.com/en/us/san-diego/92101/weather-forecast/347628'}, {'encrypted_content': 'Er0ECioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDAYfbX/PDt5k3Nb0OxoMrLEgiOFpQw4gti17IjB9klE1zV56h9I+EDQazR3RRggq+rQ9zzxB/lhrahHx/N7hxt788ukIPuq8B8K4FGoqwAPPkAN/aV1G7HMlzz0Ua6dWpHX7UDXqK0nXCwSoaf6skbLLlYjaHyc/NrPAUcpWKb0fSxw7/qAlQ819spHPJaDd12gc4eB+mvRJvq3JHlL/IYLqMnmyVP3+pACx73dqcvbe934WDGGfmDUuCaTSE6qrgpDs4pY9X7qtVHmkiKCGcocr4hRx+byox101CXdYmEIqS/G+unorXIXk1QjrS3IlkdZhyaUObJyFAI2ipoO0c8XJeyErdaZuFkukzneIbUnwV14ZJmqzcispeaN5PnajC3Ii1YHj1gjPFWl6h7fV7fjwQg3BRaE7xfOAsd6VVo9r9OQOXQL2XsHSthPG5HHV/NouRU6IHi+02aF752fn58ZuaPV3QrmgdQwjZgGq7+mapEEUb5tnlSqiFXnDQu4bgf5T61tooHXaixOx94ncI0JiuIuoAO44ThnZAw8O/rmOQne1MfxqzhgIKkfqSxcLl65qHyj+huSTy2bkLRXhE9Uky0lOnSg5Hucua0gqRQOF+UpS36HGMJwzyhAR9o/BRAWt5Zvf/ci9RmPcCGd6ponesifuuK2ZV6gI2sdd4EuOAzxdBQK6+EAm8hYu6tO/GAM=', 'page_age': '1 week ago', 'title': 'San Diego weather forecast – NBC 7 San Diego', 'type': 'web_search_result', 'url': 'https://www.nbcsandiego.com/weather/'}, {'encrypted_content': 'EpoHCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDDSG9vvtGO/+PQ7F5hoMuLDibaBbb5J+91+9IjDYaOoXvxS18xWIMS6GoaZSrBmAu39bff4pz80lig0UbPY3K8qedY2FanfADNCx22MqnQaB36Z/Pp+D22kVLNoPIwJO66liWRKFSYoqDlPdBcmwyBQNuDkMEQ4y7ntXg2Qhd99Sj+wv8ubJgnAFW6jgfCbqBXvccE5WCPMeTAhEW8ejoMEdt2kk5u8NWGYtsDHJ/hbV4uVFgyBVPedBgqcw+lCbid93PlzHcS9SRW8UDo3bfE22vIJqUNrccX+Q/dUs15VWfs6latIPJJzKSMOxlL37yX36bvP5wq5PUi+g2V/dQLNo1VBat/P8eST4eC27Xne82kS6rIaKnLuSbW+1PMFOfmdu+NP7fYhvfWpI8EQ4LddiJiO3djmrgsrub2xcTso9w8gQPk74w6nvFKksDVNOgUfiWb49qIWws+NJO9rMNyqfbOh8BW3p4ER+kThWEFEeNzrG7tdBJSGZXcbH1ddlqBQ3kqnhjO/y/pm8qu5EI2lbpkglL8dlFaWZCHsj3y65B/mvEb6w/PNrJhd1YCyBIxTfTzacdNjLV+blNYi3ZsgX+bSe4aWBki5x/vBqS1S9RXf3DI+XNczfuw9hYU7aXX03bA3dusOYy1fejdYCIbGjCgox/uDJpzDYbF1pXQvYUAB2IkK4oJypCE+z3oSVjP3t2j8KL0/CVLlhQwlmJoIrdS04lfEFdcKKzwwTeKHrjEfEpIjCmASSKUpMQoB1oBpkZN0daYPBIBIAX+cUsnccE8wQpLuJRgns4Qj3fKKP+KpBSAKXPywChnhH3+T3ke1aZU1kjdbmnr6y7rcYZXGrYLOmlOG4AKotjpRCKTQYp4H+x/KRMbSVtfSKHRBVUye1WmX/ISybNH/j7OhT+RXaXGosgjiwJ1Sos+1Qixl4C1VMyZ1evTtbKCLIXc9RmvsyXusRy7YuyArhSMvV3dUBmkBAdTT32fFBL5SiCeDWQWzTDhSBRvPM2XZoZ74jEEhcPHsJXKPlEtb1riE4g0RNl6nM0ak2sFFyTvXdBX38IjC4WlyPpmVMgODCSi0sghrrv3TwgmxktOzB8FqFWYUMmtcEP+/KNevBE+BwLOGlE4i6H7HBBIcEjh7YS20c6XbWBO86OewPLWUCYBgD', 'page_age': None, 'title': 'San Diego, CA Hourly Weather Forecast | Weather Underground', 'type': 'web_search_result', 'url': 'https://www.wunderground.com/hourly/us/ca/san-diego'}, {'encrypted_content': 'EsoCCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDOD8jpVVI1Y8wAFbIRoMu2pPyJx27/aZmt4aIjCnjE5zS5/NSsTSpTt6cTwvG/5o+qL1WUvzuApL0MgJeZCKhbG4CxGa/BMth4eE0r8qzQE6h43bsOFsRf2SZJV/9nSAPqz8+CGYNICQU3KajCi1PzZAT82XGAZPq38I1Yi2RGHukOjHPZcXjQaGOSVPIIsc8g5Le+yCwkY5yKTE7H0ddgvRqRyG79DQMOczg6Rof0fKiDiILn1+IDueeenVSDw7OBbTsFRY9vn9bcYNBkDOHgE9UZ5j7w5pc/+im1XaIANgVKJSEVLgQEHMQDYC88PWukL4anr5qz4A74T58QfuFAAncUWaNj9KutvxY3bjZpvgy7FzXoeCjm1mD9ZJGAM=', 'page_age': '2 days ago', 'title': 'San Diego, CA', 'type': 'web_search_result', 'url': 'https://www.weather.gov/sgx/'}, {'encrypted_content': 'EuUJCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDC0hIrbCQcBpkxK43BoMmDAhxJ5feHCUOMmbIjBBcNiSEQLizvwjh3ifIbvx4eQXWHU4AfycV39C6L6LEh67wvlLWLWGwE314HPpXFAq6AgOXA/Qhc8BzJc7Pjj3K7QsFXqiML2rITjQkKXBYz9yhjVXB9pu/tv6TCbzzyYJDzcyJUgvm9nwjBRw8KPZaps8kJuWQbOIzOXlDwHq3NqeTKhYI1GjLU+G3jBnFYj66ksa9qoeSpLN/1e9gaqXPBRgfYGft7BPtTjPJ2oFL1UZP2ThjRCkrzyTiLgUrrLNXD7++6vb3VJAeIHeXTgNenH05yIEFQ6g7n28Twx1w8eI+8D5JsHZSxX9Fx6r69UCB5EITOOiikoKKsof7BKZ8yoIoj9NkYEziWn6McakHYRXDwD21CC+QUJlMQ+BFbGJLPf9HrKCbMCdJllx71xxsSqjGLPSgFnmEsWA9pGPXzcJPUo+0Lk14ixj+a0Eq3f6GtK7EgE+ESMGC6Jx+xtI8KnVlyqvlngHiUbE3d7fbNVDsOJXvCtOkOMtp3xD0/p7D9nHXAme98lZuZOF9TspdSGplPtYuy3G8XWp3Y0S6yn9fccgZQ9KwuL03IAvvKaZm2211lZudV38a8hP8Nrbw/hsnSXrjvgc+ukGaVTE/Kmi/c90DulAhfxYt7ROGbNnQxRIvKirjI0rxbIVVi35R1qtNIoT1hsEhGzFD4FTCUCoN/oLvYHUFxTeleA1+JIH/iFiWrrUqIYD3MWmYsmtmUDyGZNPFfMQ9T+TV3/HDAQKbwpmV+GRcykgoh2zfdT338BLvyJX18QGbGfHCkXjddVTqpHOtZPnDWjUkU55Ij1NSZ6S/VOZpBMgOohMNn4w3iJ6xE/AwNNmnLHV3RH/6/INC7rUqU3V406lIw6X0DALSy3Ee7oi6o/8HjSP1hFG+wbRyLGhouZ3WCBvZaN80Xx2cR42VEAMofQ/oTlEVpe6ZL1+IS+U9bL32ZFDkjL5Z2mC0Gzj42MhF1s6dK5WXh72uNAtHeUHCnvpMtKyp07f702cJGsP89wFJCzHLtrKlW25Q2v3+Id1Z8ADQ0mY12pXZrGhsCztOOqzFJ0a7Ig0hHtnBmkkk3M1hGJsK4xqLxXz7qgUD3t9yyZGVaG1BM35MQlRBpbYAgPb431OU2TrhreSnG2pbZpU2qOODd6HFHkJKq6rg9EyhHYitN9Xu0l8EC/VCHxAOEb1f/3dmONGk4WmveKpVDRTgp1WJQB8hneRzu0xWDaplUDbRabRJT46kXP8XFxLWGULvoYoC/GU3eoATxJ0YQMzPtXDdOOyJXdGNWUAsTbleZjU6Hh7beWq7hVPIF87is/O+q5Fo8+h8STJQdBLWHXbl3Mw8gy3zrGlcU3VAGeu9SgSsXkMfQmQESSP4Q0ah1IZq42WHtABFpYoJ/8nDILVr32Ragz9Hrxesy/NuYlRMYZI9ealkzRR8mWKYQG06dOr1A9OIIg8vUJnIomMPEhEE8UDu1w865PnOmJlwEw52TDWSZs8QZQaac67zEwAaJFzVJIfQWhdoOSpKQ6cGdKjVMW/tCorBg3vAT19kGJCLSD9qYaLvWhFIsWUsiRHMQ8YAw==', 'page_age': None, 'title': 'San Diego, CA Weather Forecast | KGTV | kgtv.com', 'type': 'web_search_result', 'url': 'https://www.10news.com/weather'}, {'encrypted_content': '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', 'page_age': None, 'title': 'San Diego, CA 10-Day Weather Forecast | Weather Underground', 'type': 'web_search_result', 'url': 'https://www.wunderground.com/forecast/us/ca/san-diego'}, {'encrypted_content': 'Ep0JCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDO5W5ygwOmiK+ln0IhoMZO8RDxGhzMYCbWQUIjAMneqIyc8oZ9Tk3KdwL9BtxQ8s2Tzu4HnfmkTwCS8OEd8YgbfGnigK6d2kPSTDmEYqoAhe2EWI+kZdKEpmqWpnmccp6sNgTY6bEZAq0Lr60qt3ZPqCo3pF5gjn4vr5hZ9WsofWhob2S+2Ice6L422AUA2WI7qx5MlgZfw1yYu+RRiTjGSov8+03G3qLT+zqzkecU8kGSaCRHO+xaEitqEVfTJ9OZw+rSLBC7KvS4TmX+IeNqiZFPwiautvgbvuG5l6lCtwfpxr38osXXZpssLytnU00HkVhKHcKjyI12rrk5S8hwuLUGNFjE63Ww0ommFKrDeVmGkXKCe6Z6Kc7/sp2vdw2mFmVkUp4zoXz35vMzOO2mwofsDPDenY/ZSKzYrGZ1uYn89KlH1CyeOdLfU4gY2TS8w+I36W9JYjXHKIPMNHIL2KmPISgnanCnKNTHR5PXKlw2tI3tMXhkJsWQNsmnHa8niebAEKBMoZk1phlmajiAhAaas0yFRV1g6X2hhyRL2zxZv/Om3GsomGNrNGaRnMOP/OWLM6OV+F0CmmPzgA2Njz92Vq6f927uDTJE/iGyR0OlpZBAqgiP97/3MCrbl1c3WscAGZUGhqTAyHWt7jOmpDXyHnv+ZRQSDOOw1kujrnQiubNoXlMPoyFFiL+r0EZZRmRrTfQahkC3iFHcBdlJXv+KqKYB5kEwM/78Ua6sB4jrAkylOeH54x9gVkMhsh0poetXr7tGfEu5Hcw3UvJgskyhIqGUjPE4YpuuW9vgQp7rfhKStSBcK+Pjuv1DKc3QGhED7yfnePhwhteDQZzhQprLEazq3Gy20KwRnUwjY+kElIiKCyiPP2ge8+riGRYMINdCSkzlMfIzIIhoaDoE4AKP5Sx0J9zpu2CJ/+FFBsycRaWp3yxUKWFWo37HOI600+ITzBsEQDkaJv6wk8OyyFFoMWSOTnTRs25n2NT0d5WeJtnKT5a0M8HTvF7Ivywph3q7x1VwZ3Z/5ltajLWk25j1T0vpAOqLn1KjzBWjexePgjK3+fbytP0XhNmCBGynvCFhTKze9wybeQ+FMCp59IGMRo6JtHs900whelhYd2jrNUSGLHerCCZJuwn+JlVpsYYHRrl3dsqAlHWPE7XAyiCe8IhLpR5rhhJQ3fUaCheZ24PmdwP31QCEIYevGv3oSFwJQYV3YsB0cIIsshCgRBiIpYI3UtTM9Sd3H26/5QFFH++4mMiZpsNsZuXDSs4gHkrEsFCpqOx7jHS49d1rv2u0xlA+BIVY/GzsMjVPYW6vet63u9y+l/kH5s62uWfqz9OAxsqnQEpP2rdP41Walq7GVkkL58gVugWj46id/vgTRFh0CV8ZyuTNeltGIv4nDrHKZx3j0JIzSZBzppxtSzGvabgVDTxBnWhlJSThdIFuyka9BKa/qAPPS6sAYnt0hUG1BtfJHywTB5fa9/CiNEzWtoTi+d4QMtlh204zMYAw==', 'page_age': 'August 30, 2021', 'title': 'San Diego 7-Day Weather Forecast | FOX 5 San Diego', 'type': 'web_search_result', 'url': 'https://fox5sandiego.com/weather/forecast/'}, {'encrypted_content': 'EssBCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDGAnvVIBF2l70kNUeRoM0QAITt2Fn4zHJdy3IjCwTSlse7se6C2m3S9p9mIufPhymsxYFFInY++cOwiV38vAN8QiFMFMt6jzPhgpmDYqT4yGaWjsIpJMVdNjbhbHk3qwVhF2gLUqaMZBCOvRxzZ493C6vk5e32FKEixDBWYhF7NMR49zSyx1x8OVnZ0rQtqqhtqB8LeppAXZCkxxK2oYAw==', 'page_age': '3 weeks ago', 'title': 'San Diego, CA Weather Forecast, Conditions, and Maps – Yahoo Weather', 'type': 'web_search_result', 'url': 'https://weather.yahoo.com/us/ca/san-diego'}, {'encrypted_content': 'EvYECioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDPPnOH/ulHWP+rgF7BoMs9Hc3lGuR9cVDiYuIjBeYWwRONSbpnPB37BNi5877X4EARxJGlDkUwO4MtFJSaIToIogZMaomBmd+Gd7Z3Yq+QPPu0tAaZcjSh9YoFXfls/nyj/2XK7k43BKC6xqffusQUFQoq9CCRlmNQLXmVg9H2Fvbr/ELvqAoJwjmmQmfAumG2FGdp0YZSKyBleIMI/CXleLeGWQKZo+vPx3XQSISN2LsC2WWMwza1ITNd3QTXYP5UX2bBK0HoMQAVd3AZyasUpTbhndclK9+psj1H37pc737cCcsIF8sGmSebEIYirjoGbHf/iFZIs/KdXLq0+WqEtVsZkb33weeO8nJc8SJSTfPufKGpBn0/CfszrH8EAzCwdEi7CgYIeuBizAP8bWN3I4LO/BVCk6pMlzAZuIykLTPnXpmQK+MsJTLLv3SXLX+rB3zxXzyUYgM1jsQgXPr0kqrzHKWelggBv85Yp91+JiKM7Rxi1s4qVj6j9DThErpV8BajajiQVQoAju+9b2/wqw8OatZNI3iPqqlrHCyskln8D8Xps2YsVrZfGvXVgCno/w5AfpJPv1gOPRCnHH2X451UXomvI2TVaFROIoOwFwr8RxTUqfOPMduIsYSo4TVatwxhXD27he70gaRl1oNA23jYSL+378sVLhlZxguSjbPA1rVFP14mRDd+2PRbZqetPMa8Go8yu42hRPYauIBkJptlAcgFowOYZTBMXOBvCVkXgF0f3LP8CurxPWDeaQjSLk0ttswRVIGAM=', 'page_age': None, 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}, {'encrypted_content': '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', 'page_age': None, 'title': 'San Diego, CA Hourly Weather | AccuWeather', 'type': 'web_search_result', 'url': 'https://www.accuweather.com/en/us/san-diego/92101/hourly-weather-forecast/347628'}], 'tool_use_id': 'srvtoolu_019oGPT86A992v8CcJa7zujv', 'type': 'web_search_tool_result'}, {'citations': None, 'text': 'Based on current weather data for San Diego, CA:\n\n**Current Conditions (December 2, 2024):**\n- ', 'type': 'text'}, {'citations': [{'cited_text': '/ 0.00 °in Partly cloudy. High around 65F. ', 'encrypted_index': 'EpEBCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDLPtWgSYdxIIR10PCBoMfJ9qEfU8tOelov+oIjBGRS/tFBx/3DU9RB1aW2A54lOSjHFkHOA6J7pnOkeOwAlH69u098JOANSO7vRjnPcqFU6Vt6eBMO2QtzBEXrcCE1XNSyHYmxgE', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': 'Partly cloudy with a high around 65°F', 'type': 'text'}, {'citations': None, 'text': '\n- ', 'type': 'text'}, {'citations': [{'cited_text': 'Winds SW at 5 to 10 mph. ', 'encrypted_index': 'Eo8BCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDCUtkjMhKD0IRuCUXBoMMWgHINdZM1psHgCGIjA17ERjerJwiNAx8enMNZjXbOC3pvH2eLxiOGN/zclGKZSPMZDMV+Xw7W6GEqv2WngqE6SLUP8QTnNf9A41fgAGzxomRw4YBA==', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': 'Winds SW at 5 to 10 mph', 'type': 'text'}, {'citations': None, 'text': '\n- ', 'type': 'text'}, {'citations': [{'cited_text': 'Low near 50F. Winds light and variable. ', 'encrypted_index': 'EpEBCioIChgCIiQ4ODk4YTFkYy0yMTNkLTRhNmYtOTljYi03ZTBlNTUzZDc0NWISDGkuEYWvDjhQUxXOiBoMo9v/ksePo67R8hZJIjBTg3Wa3XZDZPXbNsMlgDjt0CHHRs2Upx5Iqyf+U1b+dj9v9IKKKtiMpXfInKvasAEqFWcOBi+yxAcqq0+Vdo0x+cxkLqZS1hgE', 'title': 'San Diego, CA Weather Conditions | Weather Underground', 'type': 'web_search_result_location', 'url': 'https://www.wunderground.com/weather/us/ca/san-diego'}], 'text': 'Low near 50°F with light and variable winds', 'type': 'text'}, {'citations': None, 'text': '\n\nThe weather is pleasant with partly cloudy skies and mild temperatures typical for San Diego in early December.', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 7302, 'output_tokens': 325, 'server_tool_use': {'web_search_requests': 1}, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 10381, 'output_tokens': 207, 'server_tool_use': {'web_search_requests': 1}, 'service_tier': 'standard'}`
 
 </details>
 
-The [`search_conf()`](https://claudette.answer.ai/core.html#search_conf)
-function creates the necessary configuration for the web search tool.
-You can customize it with several parameters:
+The `search_conf()` function creates the necessary configuration for the
+web search tool. You can customize it with several parameters:
 
 ``` python
 search_conf(
@@ -1005,13 +1010,13 @@ linking to the source information. Claudette automatically formats these
 citations and provides them as footnotes in the response.
 
 Web search usage is tracked separately from normal token usage in the
-[`usage`](https://claudette.answer.ai/core.html#usage) statistics:
+`usage` statistics:
 
 ``` python
 chat.use
 ```
 
-    In: 7302; Out: 325; Cache create: 0; Cache read: 0; Total Tokens: 7627; Search: 1
+    In: 10381; Out: 207; Cache create: 0; Cache read: 0; Total Tokens: 10588; Search: 1
 
 Web search requests have their own pricing. As of May 2024, web searches
 cost \$10 per 1,000 requests.
@@ -1029,7 +1034,7 @@ Important notes about the text editor tool:
 - It uses type identifiers like “text_editor_20250124” specific to
   Claude models
 - You must implement a dispatcher function (in Claudette, it’s
-  [`str_replace_based_edit_tool`](https://claudette.answer.ai/text_editor.html#str_replace_based_edit_tool))
+  `str_replace_based_edit_tool`)
 - Different commands route through this single dispatcher function
 
 The text editor tool allows Claude to:
@@ -1052,96 +1057,97 @@ for o in chat.toolloop('Please explain concisely what my _quarto.yml does. Use y
     if not isinstance(o,dict): display(o)
 ```
 
-I’ll examine your \_quarto.yml file to explain what it does. Let me
-start by looking at the current directory to locate the file.
+I’ll help you understand what your \_quarto.yml file does. Let me first
+locate and read the file.
 
 <details>
 
-- id: `msg_01S59jijaZGLN9jq525KoDRu`
+- id: `msg_01JrmFSm9YzTbUgPsfbkNJ7u`
 - content:
-  `[{'citations': None, 'text': "I'll examine your _quarto.yml file to explain what it does. Let me start by looking at the current directory to locate the file.", 'type': 'text'}, {'id': 'toolu_01NxKxWNHFroLYxTULzFnBAp', 'input': {'command': 'view', 'path': '.'}, 'name': 'str_replace_based_edit_tool', 'type': 'tool_use'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': "I'll help you understand what your _quarto.yml file does. Let me first locate and read the file.", 'type': 'text'}, {'id': 'toolu_01FAUg95cLdRErrwzkQ2kygn', 'input': {'command': 'view', 'path': '.'}, 'name': 'str_replace_based_edit_tool', 'type': 'tool_use'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `tool_use`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 1120, 'output_tokens': 106, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 1284, 'output_tokens': 100, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
-Now I can see the \_quarto.yml file exists. Let me examine its contents
-to understand what it configures.
+Now let me read the \_quarto.yml file to see its contents:
 
 <details>
 
-- id: `msg_015w8s5yw4RBs4dXgfLx2CDS`
+- id: `msg_01MpqJsaYopkWQ4c7LacYBDd`
 - content:
-  `[{'citations': None, 'text': 'Now I can see the _quarto.yml file exists. Let me examine its contents to understand what it configures.', 'type': 'text'}, {'id': 'toolu_01ToUv8CSQH69Kx2ahBSwcGf', 'input': {'command': 'view', 'path': '/_Users/jhoward/aai-ws/claudette/_quarto.yml'}, 'name': 'str_replace_based_edit_tool', 'type': 'tool_use'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': 'Now let me read the _quarto.yml file to see its contents:', 'type': 'text'}, {'id': 'toolu_0112UWUrKRqNE52T3ViX3qDs', 'input': {'command': 'view', 'path': '/_quarto.yml'}, 'name': 'str_replace_based_edit_tool', 'type': 'tool_use'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `tool_use`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 2738, 'output_tokens': 120, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 2462, 'output_tokens': 97, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
-Let me use the correct path:
+\[ToolUseBlock(id=‘toolu_01Wn5h9364J8iRXh5YzUsQyW’, input={‘command’:
+‘view’, ‘path’: ’/Users/tommy/aai-ws/claudette/\_quarto.yml’},
+name=‘str_replace_based_edit_tool’, type=‘tool_use’)\]
 
 <details>
 
-- id: `msg_01Baaa1otgra5CHimvP9Ja5s`
+- id: `msg_01PvNz8Pogu4fYEnZevuT6Be`
 - content:
-  `[{'citations': None, 'text': 'Let me use the correct path:', 'type': 'text'}, {'id': 'toolu_01FTCbeJLRdAyfqqnq3pAQFa', 'input': {'command': 'view', 'path': '/Users/jhoward/aai-ws/claudette/_quarto.yml'}, 'name': 'str_replace_based_edit_tool', 'type': 'tool_use'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'id': 'toolu_01Wn5h9364J8iRXh5YzUsQyW', 'input': {'command': 'view', 'path': '/Users/tommy/aai-ws/claudette/_quarto.yml'}, 'name': 'str_replace_based_edit_tool', 'type': 'tool_use'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `tool_use`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 2896, 'output_tokens': 102, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 2583, 'output_tokens': 92, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
-Your `_quarto.yml` file configures a Quarto website project with the
-following key settings:
+## Summary of your \_quarto.yml
 
-**Project Configuration:** - Sets up a website project type - Includes
-all `.txt` files as resources - Configures preview server on port 3000
-without auto-opening browser
+This Quarto configuration file sets up a **documentation website**
+(likely for the claudette Python package) with the following features:
 
-**HTML Formatting:** - Uses the “cosmo” theme with custom CSS from
+**Project Settings:** - Generates a website from your notebooks -
+Includes all `.txt` files as resources - Preview server runs on port
+3000 without auto-opening browser
+
+**HTML Styling:** - Uses the “cosmo” theme with custom CSS from
 `styles.css` - Enables table of contents, code tools, and syntax
-highlighting - Sets a custom layout with wider body (1800px) and
-narrower sidebar (180px) - Uses “arrow” highlight style with custom code
-block styling - Keeps markdown files during rendering
+highlighting (arrow style) - Custom layout: 180px sidebar, 1800px body,
+150px margins - Blue left border (#31BAE9) on code blocks - Keeps
+markdown files after rendering
 
-**Website Features:** - Enables social media cards (Twitter and Open
-Graph) - Adds a search-enabled navbar with primary background - Uses a
-floating sidebar style - Links to GitHub issues via repo-actions
+**Website Features:** - Social media cards (Twitter & Open Graph) for
+sharing - GitHub issue links in navbar - Primary-colored navbar with
+search - Floating sidebar style
 
-**Metadata Sources:** - Pulls additional configuration from `nbdev.yml`
-and `sidebar.yml` files
+**Additional Config:** - Imports settings from `nbdev.yml` and
+`sidebar.yml` files
 
-This appears to be set up for a documentation website, likely for a
-Python package using nbdev (given the nbdev.yml reference), with a focus
-on displaying code and technical content with good readability and
-navigation.
+This is a typical **nbdev** setup for generating documentation from
+Jupyter notebooks with a modern, wide-layout design.
 
 <details>
 
-- id: `msg_01Ba23FNyw6xy7KdtTVnBdk6`
+- id: `msg_01QfeUVnGn5KUtDPJNjRsxU5`
 - content:
-  `[{'citations': None, 'text': 'Your`\_quarto.yml`file configures a Quarto website project with the following key settings:\n\n**Project Configuration:**\n- Sets up a website project type\n- Includes all`.txt`files as resources\n- Configures preview server on port 3000 without auto-opening browser\n\n**HTML Formatting:**\n- Uses the "cosmo" theme with custom CSS from`styles.css`\n- Enables table of contents, code tools, and syntax highlighting\n- Sets a custom layout with wider body (1800px) and narrower sidebar (180px)\n- Uses "arrow" highlight style with custom code block styling\n- Keeps markdown files during rendering\n\n**Website Features:**\n- Enables social media cards (Twitter and Open Graph)\n- Adds a search-enabled navbar with primary background\n- Uses a floating sidebar style\n- Links to GitHub issues via repo-actions\n\n**Metadata Sources:**\n- Pulls additional configuration from`nbdev.yml`and`sidebar.yml`files\n\nThis appears to be set up for a documentation website, likely for a Python package using nbdev (given the nbdev.yml reference), with a focus on displaying code and technical content with good readability and navigation.', 'type': 'text'}]`
-- model: `claude-sonnet-4-20250514`
+  `[{'citations': None, 'text': '## Summary of your _quarto.yml\n\nThis Quarto configuration file sets up a **documentation website** (likely for the claudette Python package) with the following features:\n\n**Project Settings:**\n- Generates a website from your notebooks\n- Includes all`.txt`files as resources\n- Preview server runs on port 3000 without auto-opening browser\n\n**HTML Styling:**\n- Uses the "cosmo" theme with custom CSS from`styles.css`\n- Enables table of contents, code tools, and syntax highlighting (arrow style)\n- Custom layout: 180px sidebar, 1800px body, 150px margins\n- Blue left border (#31BAE9) on code blocks\n- Keeps markdown files after rendering\n\n**Website Features:**\n- Social media cards (Twitter & Open Graph) for sharing\n- GitHub issue links in navbar\n- Primary-colored navbar with search\n- Floating sidebar style\n\n**Additional Config:**\n- Imports settings from`nbdev.yml`and`sidebar.yml`files\n\nThis is a typical **nbdev** setup for generating documentation from Jupyter notebooks with a modern, wide-layout design.', 'type': 'text'}]`
+- model: `claude-sonnet-4-5-20250929`
 - role: `assistant`
 - stop_reason: `end_turn`
 - stop_sequence: `None`
 - type: `message`
 - usage:
-  `{'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 3235, 'output_tokens': 267, 'server_tool_use': None, 'service_tier': 'standard'}`
+  `{'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'input_tokens': 2912, 'output_tokens': 254, 'server_tool_use': None, 'service_tier': 'standard'}`
 
 </details>
 
@@ -1149,7 +1155,7 @@ navigation.
 chat.use
 ```
 
-    In: 9989; Out: 595; Cache create: 0; Cache read: 0; Total Tokens: 10584; Search: 0
+    In: 9241; Out: 543; Cache create: 0; Cache read: 0; Total Tokens: 9784; Search: 0
 
 ## Other model providers
 
@@ -1163,14 +1169,8 @@ These are the models available through Bedrock:
 models_aws
 ```
 
-    ['anthropic.claude-sonnet-4-20250514-v1:0',
-     'claude-3-5-haiku-20241022',
-     'claude-3-7-sonnet-20250219',
-     'anthropic.claude-3-opus-20240229-v1:0',
-     'anthropic.claude-3-5-sonnet-20241022-v2:0']
-
 To use them, call `AnthropicBedrock` with your access details, and pass
-that to [`Client`](https://claudette.answer.ai/core.html#client):
+that to `Client`:
 
 ``` python
 from anthropic import AnthropicBedrock
@@ -1184,9 +1184,8 @@ ab = AnthropicBedrock(
 client = Client(models_aws[-1], ab)
 ```
 
-Now create your [`Chat`](https://claudette.answer.ai/core.html#chat)
-object passing this client to the `cli` parameter – and from then on,
-everything is identical to the previous examples.
+Now create your `Chat` object passing this client to the `cli` parameter
+– and from then on, everything is identical to the previous examples.
 
 ``` python
 chat = Chat(cli=client)
@@ -1202,7 +1201,7 @@ models_goog
 ```
 
 To use them, call `AnthropicVertex` with your access details, and pass
-that to [`Client`](https://claudette.answer.ai/core.html#client):
+that to `Client`:
 
 ``` python
 from anthropic import AnthropicVertex
@@ -1225,25 +1224,11 @@ chat("I'm Jeremy")
 - [Pydantic Structured
   Ouput](https://github.com/tom-pollak/claudette-pydantic)
 
-[^1]: https://www.wunderground.com/weather/us/ca/san-diego “TomorrowSat
-    06/21 High · 67 °F · 14% Precip.”
+[^1]: https://www.wunderground.com/weather/us/ca/san-diego “/ 0.00 °in
+    Partly cloudy. High around 65F.”
 
-[^2]: https://www.wunderground.com/weather/us/ca/san-diego “High 67F.”
+[^2]: https://www.wunderground.com/weather/us/ca/san-diego “Winds SW at
+    5 to 10 mph.”
 
-[^3]: https://www.wunderground.com/weather/us/ca/san-diego “/ 0.00 °in
-    Cloudy early with partial sunshine expected late.”
-
-[^4]: https://www.wunderground.com/weather/us/ca/san-diego “Winds SSW at
-    10 to 15 mph.”
-
-[^5]: https://www.wunderground.com/weather/us/ca/san-diego “Low 62F.
-    Winds SSW at 10 to 15 mph.”
-
-[^6]: https://www.weather.gov/sgx/ “Cooler today with highs around 4-7
-    degrees below normal for most areas, still slightly above normal in
-    the lower deserts.”
-
-[^7]: https://www.accuweather.com/en/us/san-diego/92101/weather-forecast/347628
-    “The air has reached a high level of pollution and is unhealthy for
-    sensitive groups. Reduce time spent outside if you are feeling
-    symptoms such as dif…”
+[^3]: https://www.wunderground.com/weather/us/ca/san-diego “Low near
+    50F. Winds light and variable.”
